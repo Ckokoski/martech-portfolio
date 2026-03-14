@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SendPulse Analytics Report</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        :root {
+            --primary: #4A90D9;
+            --secondary: #50C878;
+            --accent: #FF6B6B;
+            --warning: #FFB347;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --bg: #F8F9FA;
+            --card: #FFFFFF;
+            --text: #333333;
+            --text-muted: #777777;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--dark) 0%, #34495E 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.85;
+            font-size: 1.05rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: -30px 0 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 20px 22px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .kpi-card .label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .kpi-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .kpi-card .trend {
+            font-size: 0.82rem;
+            margin-top: 4px;
+        }
+
+        .trend.increasing { color: var(--secondary); }
+        .trend.decreasing { color: var(--accent); }
+        .trend.stable { color: var(--text-muted); }
+
+        /* Sections */
+        .section {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 28px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin: 18px 0 10px 0;
+        }
+
+        .chart-container {
+            margin: 16px 0;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        /* Recommendations */
+        .rec-card {
+            border-left: 4px solid var(--primary);
+            background: var(--bg);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .rec-card.high { border-left-color: var(--accent); }
+        .rec-card.medium { border-left-color: var(--warning); }
+        .rec-card.low { border-left-color: var(--primary); }
+
+        .rec-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .rec-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .rec-badge.high { background: var(--accent); }
+        .rec-badge.medium { background: var(--warning); }
+        .rec-badge.low { background: var(--primary); }
+
+        .rec-category {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .rec-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .rec-desc {
+            font-size: 0.92rem;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .rec-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .rec-meta strong {
+            color: var(--dark);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .data-table th {
+            background: var(--light);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .data-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .data-table tr:hover td {
+            background: #f0f4f8;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Nav tabs for recommendations */
+        .rec-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .rec-tab {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1px solid var(--light);
+            background: var(--bg);
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .rec-tab.active,
+        .rec-tab:hover {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="container">
+        <h1>SendPulse Analytics Report</h1>
+        <p>Email Campaign Performance Analysis &mdash; Generated {{ generated_at }}</p>
+    </div>
+</div>
+
+<!-- KPI Cards -->
+<div class="container">
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="label">Total Campaigns</div>
+            <div class="value">{{ overall.total_campaigns }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Total Emails Sent</div>
+            <div class="value">{{ "{:,}".format(overall.total_sent) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Avg Open Rate</div>
+            <div class="value">{{ "%.1f" | format(overall.avg_open_rate * 100) }}%</div>
+            <div class="trend {{ trends.avg_open_rate }}">
+                {% if trends.avg_open_rate == 'increasing' %}&#9650; Trending Up
+                {% elif trends.avg_open_rate == 'decreasing' %}&#9660; Trending Down
+                {% else %}&#9644; Stable{% endif %}
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Avg Click Rate</div>
+            <div class="value">{{ "%.1f" | format(overall.avg_click_rate * 100) }}%</div>
+            <div class="trend {{ trends.avg_click_rate }}">
+                {% if trends.avg_click_rate == 'increasing' %}&#9650; Trending Up
+                {% elif trends.avg_click_rate == 'decreasing' %}&#9660; Trending Down
+                {% else %}&#9644; Stable{% endif %}
+            </div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Total Revenue</div>
+            <div class="value">${{ "{:,.0f}".format(overall.total_revenue) }}</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Avg Bounce Rate</div>
+            <div class="value">{{ "%.1f" | format(overall.avg_bounce_rate * 100) }}%</div>
+            <div class="trend {{ 'decreasing' if trends.avg_bounce_rate == 'increasing' else 'increasing' if trends.avg_bounce_rate == 'decreasing' else 'stable' }}">
+                {% if trends.avg_bounce_rate == 'increasing' %}&#9650; Trending Up
+                {% elif trends.avg_bounce_rate == 'decreasing' %}&#9660; Trending Down
+                {% else %}&#9644; Stable{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Trends -->
+    <div class="section">
+        <h2>1. Performance Trends</h2>
+        <div class="chart-container">{{ charts.performance_trends }}</div>
+        <div class="chart-container">{{ charts.revenue_trend }}</div>
+        <div class="chart-container">{{ charts.campaign_scatter }}</div>
+    </div>
+
+    <!-- Subject Line Analysis -->
+    <div class="section">
+        <h2>2. Subject Line Analysis</h2>
+        <div class="two-col">
+            <div class="chart-container">{{ charts.subject_length }}</div>
+            <div class="chart-container">{{ charts.subject_features }}</div>
+        </div>
+
+        <h3>Top Performing Subject Lines</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Subject Line</th>
+                    <th>Open Rate</th>
+                    <th>Click Rate</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in top_subjects %}
+                <tr>
+                    <td>{{ s.subject_line }}</td>
+                    <td>{{ "%.1f" | format(s.open_rate * 100) }}%</td>
+                    <td>{{ "%.1f" | format(s.click_rate * 100) }}%</td>
+                    <td>{{ s.campaign_type }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Send Time Analysis -->
+    <div class="section">
+        <h2>3. Send Time Analysis</h2>
+        <div class="chart-container">{{ charts.send_time_heatmap }}</div>
+        <div class="chart-container">{{ charts.hourly_performance }}</div>
+        <p style="margin-top:12px; color: var(--text-muted);">
+            <strong>Best send window:</strong> {{ best_hour }}:00 on {{ best_dow }}s
+            ({{ "%.1f" | format(best_hour_rate * 100) }}% avg open rate)
+        </p>
+    </div>
+
+    <!-- List Health -->
+    <div class="section">
+        <h2>4. List Health</h2>
+        <div class="chart-container">{{ charts.list_health }}</div>
+
+        {% if high_bounce_campaigns %}
+        <h3>Flagged: High Bounce Campaigns</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Campaign ID</th><th>Name</th><th>Date</th><th>Bounce Rate</th></tr>
+            </thead>
+            <tbody>
+                {% for c in high_bounce_campaigns %}
+                <tr>
+                    <td>{{ c.campaign_id }}</td>
+                    <td>{{ c.campaign_name }}</td>
+                    <td>{{ c.send_date }}</td>
+                    <td style="color: var(--accent); font-weight: 600;">{{ "%.1f" | format(c.bounce_rate * 100) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+    <!-- Subscriber Segmentation -->
+    <div class="section">
+        <h2>5. Subscriber Segmentation</h2>
+        <div class="chart-container">{{ charts.subscriber_segments }}</div>
+
+        <h3>Segment Profiles</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Segment</th>
+                    <th>Subscribers</th>
+                    <th>Avg Open Rate</th>
+                    <th>Avg Click Rate</th>
+                    <th>Avg Days Since Open</th>
+                    <th>Avg Purchases</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in segment_profiles %}
+                <tr>
+                    <td><strong>{{ row.segment_name }}</strong></td>
+                    <td>{{ "{:,}".format(row.count) }}</td>
+                    <td>{{ "%.1f" | format(row.avg_open_rate * 100) }}%</td>
+                    <td>{{ "%.1f" | format(row.avg_click_rate * 100) }}%</td>
+                    <td>{{ "%.0f" | format(row.avg_days_since_open) }} days</td>
+                    <td>{{ "%.1f" | format(row.avg_purchases) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="section">
+        <h2>6. Recommendations</h2>
+
+        <div class="rec-tabs">
+            <span class="rec-tab active" onclick="filterRecs('all')">All ({{ recommendations | length }})</span>
+            <span class="rec-tab" onclick="filterRecs('Send Time')">Send Time</span>
+            <span class="rec-tab" onclick="filterRecs('Subject Line')">Subject Line</span>
+            <span class="rec-tab" onclick="filterRecs('List Hygiene')">List Hygiene</span>
+            <span class="rec-tab" onclick="filterRecs('A/B Test')">A/B Tests</span>
+        </div>
+
+        {% for rec in recommendations %}
+        <div class="rec-card {{ rec.priority }}" data-category="{{ rec.category }}">
+            <div class="rec-header">
+                <span class="rec-badge {{ rec.priority }}">{{ rec.priority }}</span>
+                <span class="rec-category">{{ rec.category }}</span>
+            </div>
+            <div class="rec-title">{{ rec.title }}</div>
+            <div class="rec-desc">{{ rec.description }}</div>
+            <div class="rec-meta">
+                <span><strong>Evidence:</strong> {{ rec.evidence }}</span>
+                <span><strong>Est. Impact:</strong> {{ rec.impact_estimate }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>SendPulse Analytics &mdash; AI-Powered Email Campaign Analysis</p>
+        <p>Report generated {{ generated_at }} | Data: {{ overall.total_campaigns }} campaigns, {{ "{:,}".format(overall.total_sent) }} emails analyzed</p>
+    </div>
+</div>
+
+<script>
+    function filterRecs(category) {
+        const cards = document.querySelectorAll('.rec-card');
+        const tabs = document.querySelectorAll('.rec-tab');
+
+        tabs.forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+
+        cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

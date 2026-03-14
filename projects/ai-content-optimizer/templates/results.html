@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results | AI Content Optimizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Content Optimizer</span>
+                </div>
+                <a href="/" class="btn btn-outline btn-sm">
+                    <i class="fas fa-arrow-left"></i> New Analysis
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main results-main">
+        <div class="container">
+
+            <!-- ============================================================
+                 OVERALL SCORE
+                 ============================================================ -->
+            <section class="overall-score-section">
+                <div class="score-gauge-container">
+                    <div class="score-gauge">
+                        <svg viewBox="0 0 200 200" class="gauge-svg">
+                            <!-- Background arc -->
+                            <circle cx="100" cy="100" r="85" fill="none"
+                                    stroke="#e9ecef" stroke-width="14"
+                                    stroke-dasharray="400" stroke-dashoffset="133"
+                                    transform="rotate(135 100 100)" stroke-linecap="round"/>
+                            <!-- Score arc -->
+                            <circle cx="100" cy="100" r="85" fill="none"
+                                    class="gauge-fill"
+                                    stroke-width="14"
+                                    stroke-dasharray="400"
+                                    stroke-dashoffset="{{ 400 - (analysis.overall_score / 100 * 267) }}"
+                                    transform="rotate(135 100 100)" stroke-linecap="round"
+                                    data-score="{{ analysis.overall_score }}"/>
+                        </svg>
+                        <div class="score-value">
+                            <span class="score-number" data-target="{{ analysis.overall_score }}">0</span>
+                            <span class="score-label">Overall Score</span>
+                        </div>
+                    </div>
+                    <div class="score-meta">
+                        <div class="score-meta-item">
+                            <i class="fas fa-file-alt"></i>
+                            <span>{{ analysis.content_type.replace('_', ' ').title() }}</span>
+                        </div>
+                        <div class="score-meta-item">
+                            <i class="fas fa-font"></i>
+                            <span>{{ analysis.readability.num_words }} words / {{ analysis.readability.num_sentences }} sentences</span>
+                        </div>
+                        {% if analysis.target_keyword %}
+                        <div class="score-meta-item">
+                            <i class="fas fa-key"></i>
+                            <span>Keyword: "{{ analysis.target_keyword }}"</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 DIMENSION CARDS
+                 ============================================================ -->
+            <section class="dimension-cards">
+                <!-- Readability Card -->
+                <div class="dimension-card">
+                    <div class="dimension-header">
+                        <div class="dimension-icon readability-icon">
+                            <i class="fas fa-book-reader"></i>
+                        </div>
+                        <div class="dimension-title-area">
+                            <h3>Readability</h3>
+                            <span class="dimension-score
+                                {% if analysis.readability.score >= 70 %}score-good
+                                {% elif analysis.readability.score >= 40 %}score-ok
+                                {% else %}score-bad{% endif %}">
+                                {{ analysis.readability.score }}/100
+                            </span>
+                        </div>
+                        <div class="dimension-grade grade-{{ analysis.readability.grade|lower }}">
+                            {{ analysis.readability.grade }}
+                        </div>
+                    </div>
+                    <div class="dimension-body">
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <span class="metric-label">Flesch Reading Ease</span>
+                                <span class="metric-value {% if analysis.readability.flesch_ease >= 60 %}text-good{% elif analysis.readability.flesch_ease >= 40 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.readability.flesch_ease }}
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Grade Level</span>
+                                <span class="metric-value">{{ analysis.readability.grade_level }}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Avg. Sentence Length</span>
+                                <span class="metric-value {% if analysis.readability.avg_sentence_length <= 22 %}text-good{% elif analysis.readability.avg_sentence_length <= 28 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.readability.avg_sentence_length }} words
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Avg. Word Length</span>
+                                <span class="metric-value">{{ analysis.readability.avg_word_length }} chars</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Passive Voice</span>
+                                <span class="metric-value {% if analysis.readability.passive_voice_pct <= 10 %}text-good{% elif analysis.readability.passive_voice_pct <= 20 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.readability.passive_voice_pct }}%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Card -->
+                <div class="dimension-card">
+                    <div class="dimension-header">
+                        <div class="dimension-icon seo-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="dimension-title-area">
+                            <h3>SEO</h3>
+                            <span class="dimension-score
+                                {% if analysis.seo.score >= 70 %}score-good
+                                {% elif analysis.seo.score >= 40 %}score-ok
+                                {% else %}score-bad{% endif %}">
+                                {{ analysis.seo.score }}/100
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dimension-body">
+                        <div class="metric-grid">
+                            <div class="metric metric-wide">
+                                <span class="metric-label">Word Count</span>
+                                <span class="metric-value {% if analysis.seo.word_count_status == 'good' %}text-good{% else %}text-ok{% endif %}">
+                                    {{ analysis.seo.word_count }} words
+                                </span>
+                                <span class="metric-hint">{{ analysis.seo.word_count_msg }}</span>
+                            </div>
+                            <div class="metric metric-wide">
+                                <span class="metric-label">Keyword Density</span>
+                                <span class="metric-value {% if analysis.seo.keyword_status == 'good' %}text-good{% elif analysis.seo.keyword_status == 'no_keyword' %}text-muted{% elif analysis.seo.keyword_status == 'low' %}text-ok{% else %}text-bad{% endif %}">
+                                    {% if analysis.seo.keyword_status == 'no_keyword' %}&mdash;{% else %}{{ analysis.seo.keyword_density }}%{% endif %}
+                                </span>
+                                <span class="metric-hint">{{ analysis.seo.keyword_msg }}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Headings</span>
+                                <span class="metric-value {% if analysis.seo.has_headings %}text-good{% else %}text-ok{% endif %}">
+                                    {% if analysis.seo.has_headings %}Detected{% else %}None{% endif %}
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Meta Description</span>
+                                <span class="metric-value {% if analysis.seo.meta_status == 'good' %}text-good{% else %}text-ok{% endif %}">
+                                    {{ analysis.seo.meta_status|title }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conversion Card -->
+                <div class="dimension-card">
+                    <div class="dimension-header">
+                        <div class="dimension-icon conversion-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="dimension-title-area">
+                            <h3>Conversion</h3>
+                            <span class="dimension-score
+                                {% if analysis.conversion.score >= 70 %}score-good
+                                {% elif analysis.conversion.score >= 40 %}score-ok
+                                {% else %}score-bad{% endif %}">
+                                {{ analysis.conversion.score }}/100
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dimension-body">
+                        <div class="metric-grid">
+                            <div class="metric">
+                                <span class="metric-label">CTAs Found</span>
+                                <span class="metric-value {% if analysis.conversion.cta_count >= 2 %}text-good{% elif analysis.conversion.cta_count == 1 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.cta_count }}
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">CTA Strength</span>
+                                <span class="metric-value {% if analysis.conversion.cta_strength in ['good', 'strong'] %}text-good{% elif analysis.conversion.cta_strength == 'weak' %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.cta_strength|title }}
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Power Words</span>
+                                <span class="metric-value {% if analysis.conversion.power_word_density >= 2 %}text-good{% elif analysis.conversion.power_word_density >= 1 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.power_word_count }} ({{ analysis.conversion.power_word_density }}%)
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Emotional Tone</span>
+                                <span class="metric-value {% if analysis.conversion.tone == 'positive' %}text-good{% elif analysis.conversion.tone == 'neutral' %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.tone|title }}
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Benefit Ratio</span>
+                                <span class="metric-value {% if analysis.conversion.benefit_ratio >= 60 %}text-good{% elif analysis.conversion.benefit_ratio >= 40 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.benefit_ratio }}%
+                                </span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Social Proof</span>
+                                <span class="metric-value {% if analysis.conversion.social_proof_count >= 2 %}text-good{% elif analysis.conversion.social_proof_count == 1 %}text-ok{% else %}text-bad{% endif %}">
+                                    {{ analysis.conversion.social_proof_count }} signal(s)
+                                </span>
+                            </div>
+                        </div>
+                        {% if analysis.conversion.power_words_found %}
+                        <div class="tag-list">
+                            <span class="tag-label">Power words found:</span>
+                            {% for pw in analysis.conversion.power_words_found %}
+                            <span class="tag tag-power">{{ pw }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if analysis.conversion.ctas_found %}
+                        <div class="tag-list">
+                            <span class="tag-label">CTAs detected:</span>
+                            {% for cta in analysis.conversion.ctas_found %}
+                            <span class="tag tag-cta">{{ cta }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 RECOMMENDATIONS
+                 ============================================================ -->
+            {% if optimizations.recommendations %}
+            <section class="results-section">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Recommendations</h2>
+                <div class="recommendations-list">
+                    {% for rec in optimizations.recommendations %}
+                    <div class="recommendation-item priority-{{ rec.priority }}">
+                        <div class="rec-priority-badge">{{ rec.priority|upper }}</div>
+                        <div class="rec-icon">
+                            <i class="fas {{ rec.icon }}"></i>
+                        </div>
+                        <div class="rec-content">
+                            <h4>{{ rec.title }}</h4>
+                            <p>{{ rec.detail }}</p>
+                            <span class="rec-category">{{ rec.category }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ============================================================
+                 ALTERNATIVE HEADLINES
+                 ============================================================ -->
+            {% if optimizations.headlines %}
+            <section class="results-section">
+                <h2 class="section-title"><i class="fas fa-heading"></i> Alternative Headlines</h2>
+                <div class="alternatives-grid">
+                    {% for h in optimizations.headlines %}
+                    <div class="alternative-card">
+                        <div class="alt-strategy">{{ h.strategy }}</div>
+                        <h3 class="alt-headline">"{{ h.headline }}"</h3>
+                        <p class="alt-rationale">{{ h.rationale }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ============================================================
+                 ALTERNATIVE CTAs
+                 ============================================================ -->
+            {% if optimizations.ctas %}
+            <section class="results-section">
+                <h2 class="section-title"><i class="fas fa-bullhorn"></i> Alternative CTAs</h2>
+                <div class="alternatives-grid">
+                    {% for c in optimizations.ctas %}
+                    <div class="alternative-card cta-card">
+                        <div class="alt-strategy">{{ c.style }}</div>
+                        <div class="alt-cta-button">{{ c.cta }}</div>
+                        <p class="alt-rationale">{{ c.rationale }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- ============================================================
+                 BEFORE / AFTER IMPROVEMENTS
+                 ============================================================ -->
+            {% if optimizations.sentence_improvements %}
+            <section class="results-section">
+                <h2 class="section-title"><i class="fas fa-exchange-alt"></i> Sentence Improvements</h2>
+                <div class="improvements-list">
+                    {% for imp in optimizations.sentence_improvements %}
+                    <div class="improvement-item">
+                        <div class="improvement-reason">
+                            <i class="fas fa-info-circle"></i> {{ imp.reason }}
+                        </div>
+                        <div class="before-after">
+                            <div class="before">
+                                <span class="ba-label">Before</span>
+                                <p>{{ imp.before }}</p>
+                            </div>
+                            <div class="ba-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="after">
+                                <span class="ba-label">After</span>
+                                <p>{{ imp.after }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Back Button -->
+            <div class="back-section">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> Analyze New Content
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>AI Content Optimizer &mdash; A MarTech Portfolio Project</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

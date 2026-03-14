@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PersonalizeKit — Experiment Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ── Top navigation ── -->
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="logo">
+            <span class="logo-icon">&#9881;</span>
+            PersonalizeKit
+        </div>
+        <span class="topbar-subtitle">Dynamic Content &amp; A/B Testing API</span>
+    </div>
+</header>
+
+<!-- ── Main content ── -->
+<main class="container">
+
+    <!-- Experiment list view -->
+    <section id="view-list">
+        <div class="section-header">
+            <h1>Experiments</h1>
+            <button class="btn btn-primary" onclick="showCreateForm()">+ New Experiment</button>
+        </div>
+
+        <div id="experiment-cards" class="card-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- Experiment detail view -->
+    <section id="view-detail" class="hidden">
+        <button class="btn btn-ghost" onclick="backToList()">&larr; All Experiments</button>
+
+        <div id="detail-header" class="detail-header"></div>
+
+        <div class="detail-sections">
+            <!-- Variant performance bars -->
+            <div class="card" id="variant-performance">
+                <h3>Variant Performance</h3>
+                <div id="variant-bars"></div>
+            </div>
+
+            <!-- Statistical report -->
+            <div class="card" id="stats-report">
+                <h3>Statistical Analysis</h3>
+                <div id="stats-content"></div>
+            </div>
+
+            <!-- Pairwise tests -->
+            <div class="card" id="pairwise-card">
+                <h3>Pairwise Comparisons</h3>
+                <div id="pairwise-content"></div>
+            </div>
+
+            <!-- Sample size guidance -->
+            <div class="card" id="guidance-card">
+                <h3>Sample Size Guidance</h3>
+                <div id="guidance-content"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create experiment modal -->
+    <div id="create-modal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeCreateForm()"></div>
+        <div class="modal-content">
+            <h2>Create New Experiment</h2>
+            <form id="create-form" onsubmit="submitExperiment(event)">
+                <label>Experiment Name
+                    <input type="text" id="exp-name" required placeholder="e.g. Homepage Banner Test">
+                </label>
+                <label>Description
+                    <textarea id="exp-desc" rows="2" placeholder="What are you testing?"></textarea>
+                </label>
+                <label>Target Segment
+                    <select id="exp-segment">
+                        <option value="all">All Segments</option>
+                        <option value="enterprise">Enterprise</option>
+                        <option value="smb">SMB</option>
+                        <option value="startup">Startup</option>
+                    </select>
+                </label>
+
+                <fieldset>
+                    <legend>Variants (min 2)</legend>
+                    <div id="variant-fields">
+                        <div class="variant-row">
+                            <input type="text" placeholder="Variant name" class="v-name" required>
+                            <input type="text" placeholder="Content / copy" class="v-content" required>
+                        </div>
+                        <div class="variant-row">
+                            <input type="text" placeholder="Variant name" class="v-name" required>
+                            <input type="text" placeholder="Content / copy" class="v-content" required>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="addVariantRow()">+ Add Variant</button>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-ghost" onclick="closeCreateForm()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Experiment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>PersonalizeKit API &mdash; Portfolio Demo &middot; Built with Flask + SQLite + SciPy</p>
+</footer>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

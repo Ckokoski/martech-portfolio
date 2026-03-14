@@ -41,7 +41,7 @@ I'm building toward an **AI Marketing Automation Director** role — leading tea
 
 | Project | Description | Tech Stack |
 |---|---|---|
-| [FlowForge: Workflow Builder](projects/flowforge-workflow-builder/) | Visual drag-and-drop workflow builder for designing marketing automation journeys (welcome series, re-engagement, cart abandonment) | React, React Flow, Zustand |
+| [CampaignFlow: Workflow Builder](projects/campaignflow-workflow-builder/) | Visual drag-and-drop workflow builder for designing marketing automation journeys (welcome series, re-engagement, cart abandonment) | React, React Flow, Zustand |
 | [PersonalizeKit: Dynamic Content API](projects/personalizekit-api/) | Flask API that serves personalized content variants based on user segments, with A/B test tracking and statistical reporting | Python, Flask, scipy |
 
 ### Content & Data Infrastructure
@@ -87,7 +87,7 @@ Tools:               Git · GitHub Pages · VS Code · Postman
 
 - **LinkedIn:** [linkedin.com/in/christopherkokoski](https://linkedin.com/in/christopherkokoski)
 - **GitHub:** [github.com/Ckokoski](https://github.com/Ckokoski)
-- **Email:** christopherkokoski@gmail.com
+
 
 ---
 

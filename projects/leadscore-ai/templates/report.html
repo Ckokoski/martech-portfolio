@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadScore AI — Scoring Report</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-light: #EEF2FF;
+            --secondary: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        /* ── Header ─────────────────────────────────── */
+        .header {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+        .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .header .subtitle { opacity: 0.85; font-size: 1.05rem; }
+        .header .meta { margin-top: 1rem; font-size: 0.85rem; opacity: 0.7; }
+
+        /* ── KPI Cards ──────────────────────────────── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .kpi-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .kpi-card .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+        .kpi-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .kpi-card .detail {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ── Sections ───────────────────────────────── */
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        .section p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Chart grid ─────────────────────────────── */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .chart-grid .section { margin-bottom: 0; }
+
+        @media (max-width: 768px) {
+            .chart-grid { grid-template-columns: 1fr; }
+            .container { padding: 1rem; }
+            .header { padding: 2rem 1.5rem; }
+        }
+
+        /* ── Tier table ─────────────────────────────── */
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .tier-table th, .tier-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .tier-table th {
+            background: var(--primary-light);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .tier-table tr:hover { background: #F8FAFC; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-sql { background: #FEE2E2; color: #DC2626; }
+        .badge-mql { background: #FEF3C7; color: #D97706; }
+        .badge-cold { background: #E2E8F0; color: #64748B; }
+
+        /* ── Confusion matrix ───────────────────────── */
+        .cm-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .cm-cell {
+            padding: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .cm-tn { background: #DCFCE7; color: #166534; }
+        .cm-fp { background: #FEE2E2; color: #991B1B; }
+        .cm-fn { background: #FEF3C7; color: #92400E; }
+        .cm-tp { background: #DBEAFE; color: #1E40AF; }
+        .cm-label { font-size: 0.7rem; font-weight: 400; display: block; margin-top: 0.25rem; }
+
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>LeadScore AI</h1>
+            <div class="subtitle">ML-Powered Lead Scoring Report</div>
+            <div class="meta">Generated: {{ generated_at }} &nbsp;|&nbsp; {{ total_leads }} leads scored &nbsp;|&nbsp; Model: XGBoost</div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="label">AUC-ROC</div>
+                <div class="value">{{ auc_roc }}</div>
+                <div class="detail">Discrimination ability</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Avg Precision</div>
+                <div class="value">{{ avg_precision }}</div>
+                <div class="detail">Precision-Recall summary</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">SQL Leads</div>
+                <div class="value">{{ sql_count }}</div>
+                <div class="detail">Score &ge; {{ sql_threshold }}</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">MQL Leads</div>
+                <div class="value">{{ mql_count }}</div>
+                <div class="detail">Score &ge; {{ mql_threshold }}</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Conversion Rate</div>
+                <div class="value">{{ conversion_rate }}</div>
+                <div class="detail">Overall dataset</div>
+            </div>
+        </div>
+
+        <!-- Score Distribution -->
+        <div class="section">
+            <h2>Lead Score Distribution</h2>
+            <p>Distribution of predicted lead scores across the dataset. MQL and SQL thresholds shown as dashed lines.</p>
+            <div id="chart_score_distribution"></div>
+        </div>
+
+        <!-- ROC + PR side by side -->
+        <div class="chart-grid">
+            <div class="section">
+                <h2>ROC Curve</h2>
+                <div id="chart_roc_curve"></div>
+            </div>
+            <div class="section">
+                <h2>Precision-Recall Curve</h2>
+                <div id="chart_precision_recall"></div>
+            </div>
+        </div>
+
+        <!-- Confusion Matrix -->
+        <div class="section">
+            <h2>Confusion Matrix (MQL Threshold = {{ mql_threshold }})</h2>
+            <p>Predictions at the MQL score threshold on the test set.</p>
+            <div class="cm-grid">
+                <div class="cm-cell cm-tn">{{ cm_tn }}<span class="cm-label">True Negative</span></div>
+                <div class="cm-cell cm-fp">{{ cm_fp }}<span class="cm-label">False Positive</span></div>
+                <div class="cm-cell cm-fn">{{ cm_fn }}<span class="cm-label">False Negative</span></div>
+                <div class="cm-cell cm-tp">{{ cm_tp }}<span class="cm-label">True Positive</span></div>
+            </div>
+        </div>
+
+        <!-- SHAP Importance -->
+        <div class="section">
+            <h2>SHAP Feature Importance</h2>
+            <p>Top features ranked by mean absolute SHAP value. Higher values indicate stronger influence on predictions.</p>
+            <div id="chart_shap_importance"></div>
+        </div>
+
+        <!-- SHAP Waterfalls side by side -->
+        <div class="chart-grid">
+            <div class="section">
+                <h2>High-Score Lead Explanation</h2>
+                <div id="chart_shap_waterfall_high"></div>
+            </div>
+            <div class="section">
+                <h2>Low-Score Lead Explanation</h2>
+                <div id="chart_shap_waterfall_low"></div>
+            </div>
+        </div>
+
+        <!-- Calibration -->
+        <div class="section">
+            <h2>Calibration Plot</h2>
+            <p>How well the predicted scores align with actual conversion rates. Points closer to the diagonal indicate better calibration.</p>
+            <div id="chart_calibration"></div>
+        </div>
+
+        <!-- Lead Source Quality -->
+        <div class="section">
+            <h2>Lead Source Quality</h2>
+            <p>Average lead score by acquisition channel. Helps identify which sources generate the highest-quality leads.</p>
+            <div id="chart_lead_source_quality"></div>
+        </div>
+
+        <!-- Top Leads Preview -->
+        <div class="section">
+            <h2>Top 20 Scored Leads</h2>
+            <p>Highest-scoring leads from the dataset.</p>
+            <table class="tier-table">
+                <thead>
+                    <tr>
+                        <th>Lead ID</th>
+                        <th>Score</th>
+                        <th>Tier</th>
+                        <th>Industry</th>
+                        <th>Company Size</th>
+                        <th>Seniority</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lead in top_leads %}
+                    <tr>
+                        <td>{{ lead.lead_id }}</td>
+                        <td><strong>{{ lead.lead_score }}</strong></td>
+                        <td>
+                            {% if lead.lead_tier == "SQL" %}
+                                <span class="badge badge-sql">SQL</span>
+                            {% elif lead.lead_tier == "MQL" %}
+                                <span class="badge badge-mql">MQL</span>
+                            {% else %}
+                                <span class="badge badge-cold">Cold</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ lead.industry }}</td>
+                        <td>{{ lead.company_size }}</td>
+                        <td>{{ lead.seniority }}</td>
+                        <td>{{ lead.lead_source }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            LeadScore AI &mdash; ML-Powered Lead Scoring &nbsp;|&nbsp; Generated with XGBoost + SHAP + Plotly
+        </div>
+
+    </div>
+
+    <!-- Render Plotly charts -->
+    <script>
+        {{ chart_js | safe }}
+    </script>
+</body>
+</html>

@@ -1,1 +1,20 @@
 .claude/
+node_modules/
+__pycache__/
+*.pyc
+*.db
+dist/
+
+# Generated data & reports (users regenerate locally)
+projects/contentpulse-audit-engine/sample_output/
+projects/sendpulse-analytics/data/
+projects/sendpulse-analytics/report.html
+projects/leadscore-ai/data/
+projects/attribution-engine/data/*.csv
+projects/attribution-engine/data/*.html
+projects/cdp-lite/data/
+projects/cdp-lite/output/
+projects/personalizekit-api/personalizekit.db
+
+# Screenshots (added by user)
+screenshots/

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDP Lite — Pipeline Report</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        :root {
+            --blue: #2563eb;
+            --purple: #7c3aed;
+            --green: #059669;
+            --amber: #d97706;
+            --red: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+        .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .header p { opacity: 0.85; font-size: 0.95rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+
+        /* KPI cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .kpi-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--blue);
+        }
+        .kpi-card .label {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .section h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Charts grid */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--gray-200); }
+        th { background: var(--gray-100); font-weight: 600; color: var(--gray-600); font-size: 0.8rem; text-transform: uppercase; }
+        tr:hover td { background: var(--gray-50); }
+
+        /* Segments */
+        .segment-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .segment-card:last-child { border-bottom: none; }
+        .segment-name { font-weight: 600; }
+        .segment-desc { font-size: 0.85rem; color: var(--gray-600); }
+        .segment-count {
+            background: var(--blue);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Grade badge */
+        .grade {
+            display: inline-block;
+            width: 28px; height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: white;
+        }
+        .grade-A { background: var(--green); }
+        .grade-B { background: var(--blue); }
+        .grade-C { background: var(--amber); }
+        .grade-D { background: #ea580c; }
+        .grade-F { background: var(--red); }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-600);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .chart-grid { grid-template-columns: 1fr; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>CDP Lite &mdash; Pipeline Report</h1>
+    <p>Customer Data Unification Pipeline &bull; Generated {{ generated_at }}</p>
+</div>
+
+<div class="container">
+
+    <!-- KPI Cards -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="value">{{ "{:,}".format(total_ingested) }}</div>
+            <div class="label">Total Records Ingested</div>
+        </div>
+        <div class="kpi-card">
+            <div class="value">{{ "{:,}".format(profiles.total_profiles) }}</div>
+            <div class="label">Unified Profiles</div>
+        </div>
+        <div class="kpi-card">
+            <div class="value">{{ resolution.dedup_rate }}%</div>
+            <div class="label">Deduplication Rate</div>
+        </div>
+        <div class="kpi-card">
+            <div class="value">{{ "{:,}".format(resolution.total_merges) }}</div>
+            <div class="label">Total Merges</div>
+        </div>
+        <div class="kpi-card">
+            <div class="value">{{ quality.avg_quality }}</div>
+            <div class="label">Avg Quality Score</div>
+        </div>
+        <div class="kpi-card">
+            <div class="value">{{ profiles.multi_source_profiles | int }}</div>
+            <div class="label">Multi-Source Profiles</div>
+        </div>
+    </div>
+
+    <!-- Ingestion & Match Methods -->
+    <div class="chart-grid">
+        <div class="chart-card">{{ charts.ingestion }}</div>
+        <div class="chart-card">{{ charts.match_methods }}</div>
+    </div>
+
+    <!-- Identity Resolution Details -->
+    <div class="section">
+        <h2>Identity Resolution Summary</h2>
+        <table>
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Total records processed</td><td>{{ "{:,}".format(resolution.total_records) }}</td></tr>
+            <tr><td>Email exact matches (merges)</td><td>{{ "{:,}".format(resolution.email_merges) }}</td></tr>
+            <tr><td>Phone exact matches (merges)</td><td>{{ "{:,}".format(resolution.phone_merges) }}</td></tr>
+            <tr><td>Fuzzy name+company matches (merges)</td><td>{{ "{:,}".format(resolution.fuzzy_merges) }}</td></tr>
+            <tr><td>Total merge operations</td><td>{{ "{:,}".format(resolution.total_merges) }}</td></tr>
+            <tr><td>Unique clusters (profiles)</td><td>{{ "{:,}".format(resolution.unique_clusters) }}</td></tr>
+            <tr><td>Deduplication rate</td><td>{{ resolution.dedup_rate }}%</td></tr>
+            <tr><td>Resolution time</td><td>{{ resolution.elapsed_seconds }}s</td></tr>
+        </table>
+    </div>
+
+    <!-- Source Overlap & Confidence -->
+    <div class="chart-grid">
+        <div class="chart-card">{{ charts.source_overlap }}</div>
+        <div class="chart-card">{{ charts.confidence_dist }}</div>
+    </div>
+
+    <!-- Quality Scores -->
+    <div class="chart-grid">
+        <div class="chart-card">{{ charts.quality_dist }}</div>
+        <div class="chart-card">{{ charts.grade_dist }}</div>
+    </div>
+
+    <!-- Quality Details -->
+    <div class="section">
+        <h2>Data Quality Summary</h2>
+        <table>
+            <tr><th>Dimension</th><th>Average Score</th></tr>
+            <tr><td>Completeness (fields populated)</td><td>{{ quality.avg_completeness }}</td></tr>
+            <tr><td>Recency (data freshness)</td><td>{{ quality.avg_recency }}</td></tr>
+            <tr><td>Confidence (identity resolution)</td><td>{{ quality.avg_confidence }}</td></tr>
+            <tr><td><strong>Overall Quality</strong></td><td><strong>{{ quality.avg_quality }}</strong></td></tr>
+        </table>
+    </div>
+
+    <!-- Audience Segments -->
+    <div class="section">
+        <h2>Audience Segments</h2>
+        {% for name, seg in segments.items() %}
+        <div class="segment-card">
+            <div>
+                <div class="segment-name">{{ name | replace("_", " ") | title }}</div>
+                <div class="segment-desc">{{ seg.description }}</div>
+            </div>
+            <div class="segment-count">{{ "{:,}".format(seg.count) }} profiles</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Sample Profiles -->
+    <div class="section">
+        <h2>Sample Unified Profiles</h2>
+        <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Sources</th>
+                    <th>Spend</th>
+                    <th>Opens</th>
+                    <th>Page Views</th>
+                    <th>Quality</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in sample_profiles %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.email }}</td>
+                    <td>{{ p.company }}</td>
+                    <td>{{ p.sources }}</td>
+                    <td>{{ p.total_spend }}</td>
+                    <td>{{ p.open_count }}</td>
+                    <td>{{ p.page_views }}</td>
+                    <td><span class="grade grade-{{ p.quality_grade }}">{{ p.quality_grade }}</span> {{ p.quality_score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    CDP Lite &mdash; Customer Data Unifier &bull; All data is synthetic &bull; Generated {{ generated_at }}
+</div>
+
+</body>
+</html>

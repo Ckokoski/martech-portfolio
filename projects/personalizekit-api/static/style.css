@@ -1,0 +1,459 @@
+/*
+ * style.css — PersonalizeKit Dashboard
+ *
+ * Clean, modern design for a portfolio-quality experiment dashboard.
+ * Uses CSS custom properties for easy theming.
+ */
+
+/* ── Reset & Variables ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg:           #f4f6f9;
+    --surface:      #ffffff;
+    --text:         #1e293b;
+    --text-muted:   #64748b;
+    --border:       #e2e8f0;
+    --primary:      #4f46e5;
+    --primary-light:#eef2ff;
+    --green:        #16a34a;
+    --green-bg:     #dcfce7;
+    --yellow:       #ca8a04;
+    --yellow-bg:    #fef9c3;
+    --blue:         #2563eb;
+    --blue-bg:      #dbeafe;
+    --red:          #dc2626;
+    --red-bg:       #fee2e2;
+    --gray:         #94a3b8;
+    --radius:       10px;
+    --shadow:       0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-lg:    0 10px 25px rgba(0,0,0,.08);
+    --font:         'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono:         'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+html { font-size: 15px; }
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Topbar ── */
+.topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: .75rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.topbar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.logo {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+.logo-icon { font-size: 1.3rem; }
+.topbar-subtitle {
+    color: var(--text-muted);
+    font-size: .85rem;
+}
+
+/* ── Container ── */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    flex: 1;
+    width: 100%;
+}
+
+/* ── Section header ── */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+.section-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ── Card grid ── */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+/* ── Cards ── */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    transition: box-shadow .15s;
+}
+.card:hover { box-shadow: var(--shadow-lg); }
+.card h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    margin-bottom: .75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+/* Experiment card */
+.exp-card { cursor: pointer; }
+.exp-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: .35rem;
+}
+.exp-card-desc {
+    color: var(--text-muted);
+    font-size: .85rem;
+    margin-bottom: .75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.exp-card-meta {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    font-size: .8rem;
+    color: var(--text-muted);
+}
+.exp-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
+.exp-card-footer {
+    margin-top: .75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ── Badges ── */
+.badge {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.badge-running   { background: var(--green-bg);  color: var(--green); }
+.badge-paused    { background: var(--yellow-bg); color: var(--yellow); }
+.badge-completed { background: var(--blue-bg);   color: var(--blue); }
+.badge-draft     { background: #f1f5f9;          color: var(--gray); }
+
+/* Segment badge */
+.badge-segment {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+/* ── Buttons ── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: var(--font);
+}
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+.btn-primary:hover { background: #4338ca; }
+.btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--primary-light); }
+.btn-sm { padding: .3rem .65rem; font-size: .8rem; }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { background: #15803d; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-warning { background: var(--yellow); color: #fff; }
+.btn-warning:hover { background: #a16207; }
+
+/* ── Detail view ── */
+.detail-header {
+    margin: 1rem 0 1.25rem;
+}
+.detail-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: .35rem;
+}
+.detail-header p {
+    color: var(--text-muted);
+    font-size: .9rem;
+}
+.detail-actions {
+    display: flex;
+    gap: .5rem;
+    margin-top: .75rem;
+    flex-wrap: wrap;
+}
+.detail-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.detail-sections > .card:first-child {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+    .detail-sections { grid-template-columns: 1fr; }
+}
+
+/* ── Variant bars ── */
+.variant-bar-group {
+    margin-bottom: 1rem;
+}
+.variant-bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .3rem;
+    font-size: .85rem;
+}
+.variant-bar-label .name { font-weight: 600; }
+.variant-bar-label .rate { font-family: var(--mono); font-size: .85rem; }
+.variant-bar-track {
+    height: 28px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+.variant-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width .4s ease;
+    display: flex;
+    align-items: center;
+    padding-left: .5rem;
+    font-size: .75rem;
+    color: #fff;
+    font-weight: 600;
+    min-width: fit-content;
+}
+.bar-green  { background: var(--green); }
+.bar-blue   { background: var(--blue); }
+.bar-yellow { background: var(--yellow); }
+.bar-red    { background: var(--red); }
+.bar-gray   { background: var(--gray); }
+
+.variant-bar-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: .25rem;
+    font-size: .78rem;
+    color: var(--text-muted);
+}
+
+.winner-tag {
+    display: inline-block;
+    background: var(--green-bg);
+    color: var(--green);
+    font-size: .7rem;
+    font-weight: 700;
+    padding: .1rem .4rem;
+    border-radius: 4px;
+    margin-left: .4rem;
+    text-transform: uppercase;
+}
+.loser-tag {
+    display: inline-block;
+    background: var(--red-bg);
+    color: var(--red);
+    font-size: .7rem;
+    font-weight: 700;
+    padding: .1rem .4rem;
+    border-radius: 4px;
+    margin-left: .4rem;
+    text-transform: uppercase;
+}
+
+/* ── Stats table ── */
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .85rem;
+}
+.stats-table th, .stats-table td {
+    text-align: left;
+    padding: .5rem .6rem;
+    border-bottom: 1px solid var(--border);
+}
+.stats-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+/* Significance indicator */
+.sig-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .2rem .5rem;
+    border-radius: 4px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+.sig-yes { background: var(--green-bg); color: var(--green); }
+.sig-no  { background: #f1f5f9;        color: var(--gray); }
+
+.confidence-stars {
+    color: var(--yellow);
+    letter-spacing: 2px;
+}
+
+/* ── Modal ── */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+}
+.modal-content {
+    position: relative;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    max-width: 520px;
+    width: 95%;
+    box-shadow: var(--shadow-lg);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.modal-content h2 {
+    margin-bottom: 1rem;
+}
+.modal-content label {
+    display: block;
+    font-weight: 600;
+    font-size: .85rem;
+    margin-bottom: .75rem;
+}
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    display: block;
+    width: 100%;
+    margin-top: .3rem;
+    padding: .45rem .6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: .9rem;
+    font-family: var(--font);
+}
+.modal-content fieldset {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .75rem;
+    margin-bottom: .75rem;
+}
+.modal-content legend {
+    font-weight: 600;
+    font-size: .85rem;
+    padding: 0 .35rem;
+}
+.variant-row {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+}
+.variant-row input { flex: 1; }
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    margin-top: 1rem;
+}
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.text-muted { color: var(--text-muted); }
+.text-mono  { font-family: var(--mono); }
+
+/* ── Footer ── */
+.footer {
+    text-align: center;
+    padding: 1.25rem;
+    color: var(--text-muted);
+    font-size: .8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+}
+
+/* ── Loading spinner ── */
+.spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Empty state ── */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+}
+.empty-state h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: .5rem;
+    text-transform: none;
+    letter-spacing: normal;
+}

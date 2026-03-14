@@ -1,4 +1,4 @@
-# FlowForge: Marketing Automation Workflow Builder
+# CampaignFlow: Marketing Automation Workflow Builder
 
 **Visual drag-and-drop workflow builder for designing marketing automation journeys — welcome series, re-engagement, cart abandonment, and more.**
 
@@ -10,7 +10,7 @@ Marketing automation platforms like SFMC Journey Builder, HubSpot Workflows, and
 
 ## Solution
 
-FlowForge is a React-based visual workflow builder that lets users design marketing automation journeys by dragging and dropping nodes onto a canvas. It demonstrates deep understanding of automation architecture — the triggers, conditions, actions, and timing that power real marketing automation programs.
+CampaignFlow is a React-based visual workflow builder that lets users design marketing automation journeys by dragging and dropping nodes onto a canvas. It demonstrates deep understanding of automation architecture — the triggers, conditions, actions, and timing that power real marketing automation programs.
 
 **Key capabilities:**
 
