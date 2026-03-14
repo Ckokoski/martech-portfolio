@@ -61,6 +61,50 @@ I'm building toward an **AI Marketing Automation Director** role — leading tea
 
 ---
 
+## Project Gallery
+
+### LeadScore AI
+![LeadScore AI](projects/leadscore-ai/screenshots/LeadScore%20AI%20Home%20-%20Results.png)
+ML-powered lead scoring model that prioritizes leads for sales handoff using behavioral and demographic signals.
+
+### Attribution Engine
+![Attribution Engine](projects/attribution-engine/screenshots/Attribution%20Dashboard%20Screenshot%20-%20Main%20Dashboard.png)
+Multi-touch attribution modeling tool that calculates channel ROI across multiple attribution models.
+
+### SendPulse Analytics
+![SendPulse Analytics](projects/sendpulse-analytics/screenshots/SendPulse%20Home%20Results.png)
+AI-powered email campaign analysis tool with recommendations for subject lines, send times, and list segmentation.
+
+### CampaignFlow Workflow Builder
+![CampaignFlow Workflow Builder](projects/campaignflow-workflow-builder/screenshots/Workflow%20Builder%20-%20Journey.png)
+Visual drag-and-drop workflow builder for designing marketing automation journeys.
+
+### PersonalizeKit API
+![PersonalizeKit API](projects/personalizekit-api/screenshots/PersonalizeKit%20-%20Home%20Dashboard.png)
+Flask API serving personalized content variants based on user segments with A/B test tracking.
+
+### AI Content Optimizer
+![AI Content Optimizer](projects/ai-content-optimizer/screenshots/AI%20Content%20Optimizer%20Results.png)
+AI application that analyzes marketing copy and suggests improvements for conversion, readability, and SEO.
+
+### CDP Lite
+![CDP Lite](projects/cdp-lite/screenshots/CDP%20Lite%20Home.png)
+Python ETL pipeline that ingests customer data from multiple sources and creates unified customer profiles.
+
+### ContentPulse Audit Engine
+![ContentPulse Audit Engine](projects/contentpulse-audit-engine/screenshots/ContentPulse%20Dashboard%20Screenshot.png)
+Automated content audit tool for marketing content performance, SEO health, and content freshness.
+
+### SQL for Marketers
+![SQL for Marketers](projects/sql-for-marketers/screenshots/SQL%20for%20Marketers%20-%20High%20Value%20Customers%20SQL.png)
+30+ documented SQL queries for SFMC and marketing databases covering segmentation, scoring, reporting, and hygiene.
+
+### CampaignView Dashboard
+![CampaignView Dashboard](projects/campaignview-dashboard/screenshots/Campaign%20View%20-%20Overview%20Dashboard.png)
+React + Node.js dashboard for visualizing campaign KPIs, email metrics, and marketing funnel performance.
+
+---
+
 ## Certifications & Learning
 
 - Salesforce Marketing Cloud Email Specialist *(in progress)*

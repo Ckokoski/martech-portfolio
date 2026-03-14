@@ -33,16 +33,13 @@ SendPulse Analytics is a Python tool that ingests email campaign performance dat
 | scikit-learn | ML clustering for audience segmentation — applicable to SFMC subscriber scoring |
 | AI Integration (mocked) | Simulates AI-powered recommendations — demonstrates prompt engineering for marketing analysis |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![SendPulse Home Results](screenshots/SendPulse%20Home%20Results.png)
 
-**Planned visualizations:**
-- Campaign performance trend lines (30/60/90 day)
-- Send time heatmap (engagement by hour × day of week)
-- Subject line performance scatter plot (length vs. open rate)
-- Subscriber engagement distribution (RFM-style scoring)
-- AI recommendation cards with confidence scores
+![Subscriber Segmentation](screenshots/SendPulse%20-%20Subscriber%20Segmentation.png)
+
+![Recommendations](screenshots/SendPulse%20-%20Recommendations.png)
 
 ## Key Metrics & Results (Simulated)
 

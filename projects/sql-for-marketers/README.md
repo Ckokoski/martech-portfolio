@@ -96,6 +96,10 @@ SELECT ...   -- The working SQL query
 | SFMC SQL dialect | Notes on SFMC-specific syntax (no CTEs, TOP instead of LIMIT, date function differences) |
 | Markdown | Documentation format — demonstrates technical writing skills essential for MarOps |
 
+## Screenshots
+
+![High Value Customers SQL](screenshots/SQL%20for%20Marketers%20-%20High%20Value%20Customers%20SQL.png)
+
 ## SFMC Tables Referenced
 
 | Table / Data View | Type | Description |

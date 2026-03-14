@@ -33,15 +33,15 @@ AI Content Optimizer is a Python + Flask web application that accepts marketing 
 | AI Integration (mocked) | Architecture for AI API calls — demonstrates prompt engineering and AI integration patterns |
 | HTML/CSS/JavaScript | Web interface — directly applicable to landing page and email template development |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![Home Dashboard](screenshots/AI%20Content%20Optimizer%20-%20Home%20Dashboard%20-%20Empty.png)
 
-**Planned interface:**
-- Text input area with content type selector (email, landing page, ad copy, blog post)
-- Analysis results panel with sub-scores (readability, SEO, conversion)
-- AI-generated suggestions panel with "accept" buttons for each recommendation
-- Before/after comparison view
+![Analysis Results](screenshots/AI%20Content%20Optimizer%20Results.png)
+
+![Recommendations](screenshots/AI%20Content%20Optimizer%20-%20Recommendations.png)
+
+![Alternative Headlines](screenshots/AI%20Content%20Optimizer%20-%20Alternative%20Headlines.png)
 
 ## Key Metrics & Results (Simulated)
 

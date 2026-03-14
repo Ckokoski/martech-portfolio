@@ -58,13 +58,17 @@ def _chart_match_methods(resolution_stats: dict) -> str:
         values=values,
         marker_colors=["#2563eb", "#7c3aed", "#f59e0b"],
         hole=0.4,
-        textinfo="label+percent+value",
+        textinfo="percent",
+        textposition="inside",
+        hoverinfo="label+percent+value",
+        pull=[0, 0.05, 0.05],
     ))
     fig.update_layout(
         title="Identity Resolution — Match Methods",
         template="plotly_white",
         height=380,
         margin=dict(t=50, b=40),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
     )
     return fig.to_html(full_html=False, include_plotlyjs=False)
 

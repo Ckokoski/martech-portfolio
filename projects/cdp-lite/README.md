@@ -32,16 +32,11 @@ CDP Lite is a Python-based ETL pipeline that demonstrates the core mechanics of 
 | SQLite | Lightweight database for unified profile storage — mirrors the profile store concept in production CDPs |
 | JSON/CSV | Standard data interchange formats for marketing platform imports and exports |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![CDP Lite Home](screenshots/CDP%20Lite%20Home.png)
 
-**Planned outputs:**
-- Pipeline run summary (records ingested, matched, deduplicated per source)
-- Identity resolution confidence distribution chart
-- Data quality scorecard per source
-- Sample unified customer profile (JSON) with full interaction timeline
-- Segment export sample (CSV ready for SFMC import)
+![Audience Segments and Unified Profiles](screenshots/CDP%20Lite%20-%20Audience%20Segments%20and%20Sample%20Unified%20Profiles.png)
 
 ## Key Metrics & Results (Simulated)
 

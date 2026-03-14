@@ -43,16 +43,11 @@ PersonalizeKit is a Flask-based API that powers dynamic content personalization.
 | `/api/track` | POST | Record an impression or conversion event |
 | `/api/report/<experiment_id>` | GET | Get full statistical report for an experiment |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![Home Dashboard](screenshots/PersonalizeKit%20-%20Home%20Dashboard.png)
 
-**Planned outputs:**
-- API documentation with example requests/responses
-- Experiment dashboard showing active tests and real-time results
-- Conversion rate comparison chart per variant per segment
-- Statistical significance progress indicator
-- Content variant preview with segment targeting rules
+![Create a New Experiment](screenshots/PersonalizeKit%20Create%20a%20New%20Experiment.png)
 
 ## Key Metrics & Results (Simulated)
 

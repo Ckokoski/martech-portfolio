@@ -51,7 +51,7 @@ def _safe_sum(series: pd.Series) -> float:
 
 def _safe_max_date(series: pd.Series) -> str:
     """Return the most recent date string from a series."""
-    parsed = pd.to_datetime(series, errors="coerce")
+    parsed = pd.to_datetime(series, errors="coerce", format="mixed")
     valid = parsed.dropna()
     if valid.empty:
         return ""

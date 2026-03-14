@@ -33,16 +33,11 @@ LeadScore AI is a Python-based predictive lead scoring system that ingests CRM a
 | SHAP | Model explainability — critical for stakeholder buy-in and sales adoption |
 | Plotly | Interactive dashboards — score distributions, ROC curves, feature importance charts |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![LeadScore AI Results](screenshots/LeadScore%20AI%20Home%20-%20Results.png)
 
-**Planned visualizations:**
-- Lead score distribution histogram with MQL/SQL threshold lines
-- SHAP feature importance waterfall chart
-- ROC curve and precision-recall curve
-- Lead source quality comparison (average score by channel)
-- Score vs. actual conversion rate calibration plot
+![Lead Source Quality Averages](screenshots/LeadScore%20AI%20-%20Lead%20Source%20Quality%20Averages.png)
 
 ## Key Metrics & Results (Simulated)
 

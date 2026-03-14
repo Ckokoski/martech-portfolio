@@ -35,15 +35,13 @@ CampaignFlow is a React-based visual workflow builder that lets users design mar
 | HTML5 Drag & Drop | Native browser API — applicable to interactive marketing tool development |
 | GitHub Pages | Deployment — demonstrates ability to ship tools without heavy infrastructure |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Live demo link and screenshots to be added after deployment*
+![Home Dashboard](screenshots/Workflow%20Builder%20-Home%20Dashboard.png)
 
-**Planned interface:**
-- Left sidebar with draggable node palette (triggers, conditions, actions, timing)
-- Central canvas for workflow design
-- Right panel for node configuration (email template selection, condition logic, timing settings)
-- Top toolbar for templates, validation, and export
+![Journey Builder](screenshots/Workflow%20Builder%20-%20Journey.png)
+
+![Workflow Validation](screenshots/Workflow%20Builder%20-%20Validate.png)
 
 ## Key Metrics & Results (Simulated)
 

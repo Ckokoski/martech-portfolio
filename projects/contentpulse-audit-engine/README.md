@@ -31,15 +31,11 @@ ContentPulse is an automated content audit tool that crawls a marketing website,
 | pandas | Data analysis — the standard for marketing data manipulation and reporting |
 | HTML/CSS/JavaScript | Dashboard frontend — skills directly applicable to email template development and landing pages |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project deployment*
+![ContentPulse Dashboard](screenshots/ContentPulse%20Dashboard%20Screenshot.png)
 
-**Dashboard Preview:**
-- Content inventory table with sortable columns
-- SEO health score distribution chart
-- Content freshness timeline
-- Top issues flagged for immediate action
+![Top Issues Found](screenshots/ContentPulse%20-%20Top%20Issues%20Found.png)
 
 ## Key Metrics & Results (Simulated)
 

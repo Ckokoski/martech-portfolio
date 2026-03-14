@@ -33,16 +33,11 @@ Attribution Engine is a Python-based attribution modeling tool that ingests mult
 | Plotly | Sankey diagrams for journey visualization, interactive attribution comparison charts |
 | networkx | Graph-based modeling for channel transition analysis in data-driven attribution |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project build*
+![Main Dashboard](screenshots/Attribution%20Dashboard%20Screenshot%20-%20Main%20Dashboard.png)
 
-**Planned visualizations:**
-- Attribution model comparison bar chart (credit by channel across all models)
-- Sankey diagram showing customer journey flow between channels
-- Channel ROI scatter plot (spend vs. attributed revenue)
-- Conversion path frequency analysis (top 10 paths)
-- Time-decay weight curve visualization
+![Channel ROI Analysis](screenshots/Attribution%20Dashboard%20Screenshot%20-%20Channel%20ROI%20Analysis.png)
 
 ## Key Metrics & Results (Simulated)
 

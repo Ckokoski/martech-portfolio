@@ -16,5 +16,5 @@ projects/cdp-lite/data/
 projects/cdp-lite/output/
 projects/personalizekit-api/personalizekit.db
 
-# Screenshots (added by user)
-screenshots/
+# Large generated screenshots folder (originals kept locally)
+# projects/*/screenshots/ are tracked for README embeds

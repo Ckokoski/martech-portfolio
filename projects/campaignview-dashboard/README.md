@@ -31,15 +31,13 @@ CampaignView is a lightweight, self-hosted marketing performance dashboard built
 | Express | REST API framework — same patterns used for SFMC custom activities and integrations |
 | CSS Grid/Flexbox | Responsive layout — applicable to email template and landing page development |
 
-## Screenshots / Demo
+## Screenshots
 
-> *Screenshots to be added after project deployment*
+![Overview Dashboard](screenshots/Campaign%20View%20-%20Overview%20Dashboard.png)
 
-**Dashboard Sections:**
-- Executive summary cards (total sends, overall engagement rate, conversion rate, revenue attributed)
-- Email performance trends (30/60/90 day views)
-- Funnel waterfall chart
-- Campaign comparison side-by-side
+![Campaign Detail View](screenshots/Campaign%20View%20-%20Campaign%20Detail%20View.png)
+
+![Email Metrics](screenshots/Campaign%20View%20-%20Email%20Metrics.png)
 
 ## Key Metrics & Results (Simulated)
 
