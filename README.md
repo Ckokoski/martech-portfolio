@@ -10,7 +10,7 @@ Marketing Technology & Operations professional with 5+ years of experience build
 
 My focus is on the intersection of **marketing operations** and **artificial intelligence**: using AI to automate content optimization, predict campaign performance, and streamline complex marketing workflows. I bring a strong technical foundation in Python, SQL, React, and API integrations, paired with a deep understanding of the marketing funnel from acquisition through retention.
 
-I'm building toward an **AI Marketing Automation Director** role — leading teams that design intelligent, automated marketing systems.
+I'm building toward an **Marketing Technology Director** role — leading teams that design intelligent, automated marketing systems.
 
 ---
 
