@@ -108,8 +108,8 @@ React + Node.js dashboard for visualizing campaign KPIs, email metrics, and mark
 ## Certifications & Learning
 
 - Salesforce Marketing Cloud Email Specialist *(in progress)*
-- Google Analytics 4 Certification
-- HubSpot Marketing Software Certification
+- Google Analytics 4 Certification (on roadmap)
+- HubSpot Marketing Software Certification (in progress)
 - AI for Marketing — ongoing coursework and applied projects
 
 ---
